@@ -3,8 +3,11 @@ import {auth,provider} from '../config/firebase-config'
 import { signInWithPopup } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { use, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export  function SignUp() {
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState(
         {
@@ -65,14 +68,15 @@ export  function SignUp() {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     }
+          const { signup,signInWithGoogle  } = useAuth();
+    
     const handleSignup = async () => {
         if (!validateForm()) {
             return;
         }
 
         try {
-            await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-            alert('Compte créé avec succès!');
+            await signup( formData.email, formData.password);
             // Réinitialiser le formulaire
             setFormData({
                 name: "",
@@ -81,21 +85,18 @@ export  function SignUp() {
                 confirmPassword: ""
             });
             setAgreedToTerms(false);
+            navigate("/dashboard");
         } catch (error) {
             console.error('Erreur lors de la création du compte:', error);
             setErrors({ general: "Erreur lors de la création du compte" });
         }
     };
-    const signInWithGoogle = async () => {
-        const results = await signInWithPopup(auth, provider);
-        const authInfo = {
-            userID :results.user.uid,
-            name : results.user.displayName,
-            profilePhoto: results.user.photoURL,
-            isAuth: true,
-        }
-        localStorage.setItem("auth", JSON.stringify(authInfo));
-        // navigate("/expense-tracker");
+    const handleSignInWithGoogle = async () => {
+      try {
+          await signInWithGoogle()
+      } catch (error) {
+        console.log(error);
+      }
     };
     return (
         <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 p-6">
@@ -279,7 +280,7 @@ export  function SignUp() {
                     
                     <button
                         type="button"
-                        onClick={signInWithGoogle}
+                        onClick={handleSignInWithGoogle}
                         className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
                         {/* Google SVG Icon */}
