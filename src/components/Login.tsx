@@ -2,8 +2,12 @@ import { ArrowRightIcon, EnvelopeIcon, LockClosedIcon } from "@heroicons/react/2
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../config/firebase-config";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+        const navigate = useNavigate();
+
         const [formData, setFormData] = useState(
             {
                 email: "",
@@ -45,19 +49,21 @@ export const Login = () => {
             setErrors(newErrors);
             return Object.keys(newErrors).length === 0;
         }
+      const { login,signInWithGoogle  } = useAuth();
+
     const handleLogin = async () =>{
 
         if (!validateForm()) {
             return;
         }
         try {
-            await signInWithEmailAndPassword(auth, formData.email, formData.password);
-            alert('connexion avec succès!');
+            await login(formData.email, formData.password);
             // Réinitialiser le formulaire
             setFormData({
                 email: "",
                 password: "",
             });
+            navigate("/dashboard");
 
         } catch(error:unknown) {
             let message = "";
@@ -95,7 +101,15 @@ export const Login = () => {
             alert(message); // or setErrors({ general: message })
             };
     };
+    const handleSignInWithGoogle= async ()=>{
+      try {
+          await signInWithGoogle();
+            navigate("/dashboard");
 
+      } catch (error) {
+        console.log(error);
+      }
+    }
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 p-6">
       {/* Header/Navbar - Identique à la page SignUp */}
@@ -229,6 +243,7 @@ export const Login = () => {
               
               <button
                 type="button"
+                onClick={handleSignInWithGoogle}
                 className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 {/* Google SVG Icon */}
