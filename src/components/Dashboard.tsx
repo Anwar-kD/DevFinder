@@ -12,8 +12,9 @@ import {
   ClockIcon
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
+
 export const Dashboard = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   const userName = currentUser?.displayName || 'Utilisateur';
     const [firstName, ...lastNameParts] = userName.split(' ');
     const lastName = lastNameParts.join(' ');
@@ -94,6 +95,12 @@ export const Dashboard = () => {
                   <UserIcon className="h-5 w-5 text-indigo-600" />
                 </div>
                 <span className="ml-2 text-sm font-medium text-gray-700"> {userName}</span>
+                <button
+                    onClick={logout}
+                    className="ml-4 px-3 py-1 text-sm text-red-600 hover:text-red-800 bg-red-100 rounded-lg"
+                  >
+                    Se déconnecter
+                  </button>
               </div>
             </div>
           </div>

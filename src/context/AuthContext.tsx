@@ -3,8 +3,8 @@ import {
   useContext,
   useEffect,
   useState,
+  PropsWithChildren
 } from "react";
-import type {ReactNode} from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -15,14 +15,14 @@ import {
   updateProfile,
 } from "firebase/auth";
 import type {User} from "firebase/auth";
-import { auth } from "../config/firebase-config"; // Assure-toi que ton fichier firebase.ts est bien configuré
+import { auth } from "../config/firebase-config"; 
 
 // Types du contexte
 interface AuthContextType {
   currentUser: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, displayName?: string) => Promise<void>;
   logout: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   updateUserProfile: (displayName: string) => Promise<void>;
@@ -41,13 +41,9 @@ export const useAuth = () => {
   return context;
 };
 
-// Props du provider
-interface AuthProviderProps {
-  children: ReactNode;
-}
 
 // Composant provider
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -97,7 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     currentUser,
     loading,
     login,
-    signup,
+    signup, 
     logout,
     signInWithGoogle,
     updateUserProfile,

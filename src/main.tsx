@@ -7,6 +7,7 @@ import { SignUp } from './components/SignUp';
 import { Login } from './components/Login';
 import { AuthProvider } from './context/AuthContext'; 
 import { Dashboard } from './components/Dashboard';
+import PrivateRoute  from './components/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <Dashboard />
+    element: (<PrivateRoute><Dashboard /></PrivateRoute>), 
   }
   // {
   //   path: '/profiles',

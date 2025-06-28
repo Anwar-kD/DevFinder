@@ -76,7 +76,7 @@ export  function SignUp() {
         }
 
         try {
-            await signup( formData.email, formData.password);
+            await signup( formData.email, formData.password, formData.name);
             // Réinitialiser le formulaire
             setFormData({
                 name: "",
