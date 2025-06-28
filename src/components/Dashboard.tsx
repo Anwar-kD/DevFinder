@@ -9,15 +9,39 @@ import {
   ArrowTrendingUpIcon,
   CheckCircleIcon,
   XCircleIcon,
-  ClockIcon
+  ClockIcon,
+  BriefcaseIcon
 } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-
+import { useGetOffers } from "../hooks/useGetOffers";
+import {importJobsFromApi} from "../hooks/fetchAndStoreOffers";
 export const Dashboard = () => {
   const { currentUser, logout } = useAuth();
   const userName = currentUser?.displayName || 'Utilisateur';
-    const [firstName, ...lastNameParts] = userName.split(' ');
-    const lastName = lastNameParts.join(' ');
+  const [firstName, ...lastNameParts] = userName.split(' ');
+  const lastName = lastNameParts.join(' ');
+  const [isImporting, setIsImporting] = useState(false);
+
+  useEffect(() => {
+    const importData = async () => {
+      if (!isImporting) {
+        setIsImporting(true);
+        try {
+          await importJobsFromApi();
+        } catch (error) {
+          console.error("Erreur import:", error);
+        } finally {
+          setIsImporting(false);
+        }
+      }
+    };
+    
+    importData();
+  }, []); // Dépendances vides pour n'exécuter qu'une fois
+
+  const {offers} = useGetOffers();
+  
   const applications = [
     { id: 1, company: "TechCorp", position: "Frontend Developer", status: "interview", date: "2023-05-15" },
     { id: 2, company: "DataSystems", position: "Data Analyst", status: "applied", date: "2023-05-10" },
@@ -133,6 +157,46 @@ export const Dashboard = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Available Job Offers Section */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-medium text-gray-900 flex items-center">
+                <BriefcaseIcon className="h-5 w-5 text-indigo-600 mr-2" />
+                Available Job Offers
+              </h2>
+              <button className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+                Refresh Offers
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {offers.map((offer, index) => {
+                const {title,employer,url,date, location} = offer;
+                return(
+                <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                  <h3 className="font-bold text-indigo-700">{title}</h3>
+<a href={url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+  Lien de l'offre
+</a>
+
+                  <div className="flex justify-between items-center mt-3">
+                    <span className="text-xs text-gray-500">{date}</span>
+                    <button className="text-xs text-indigo-600 hover:text-indigo-800 font-medium">
+                      Quick Apply
+                    </button>
+                  </div>
+                </div> 
+                )
+            })}
+            </div>
+            
+            <div className="mt-6 text-center">
+              <button className="text-indigo-600 hover:text-indigo-800 font-medium text-sm">
+                View all available offers →
+              </button>
+            </div>
           </div>
 
           {/* Recent Applications */}

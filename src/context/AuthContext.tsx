@@ -3,8 +3,8 @@ import {
   useContext,
   useEffect,
   useState,
-  PropsWithChildren
 } from "react";
+import type {PropsWithChildren} from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -26,7 +26,6 @@ interface AuthContextType {
   logout: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   updateUserProfile: (displayName: string) => Promise<void>;
-
 }
 
 // Valeur initiale par défaut
