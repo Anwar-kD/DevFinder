@@ -8,7 +8,7 @@
 //   projectId: "fir-tutorial-2f286",
 //   storageBucket: "fir-tutorial-2f286.firebasestorage.app",
 //   messagingSenderId: "793625787845",
-//   appId: "1:793625787845:web:965753840eb59192201fac",
+//   appId: "1:793625787845:web:965753840eb591922_01fac",
 //   measurementId: "G-FF2X9CRK45"
 // };
 
