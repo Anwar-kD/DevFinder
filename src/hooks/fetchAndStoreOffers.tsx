@@ -17,19 +17,9 @@ export const importJobsFromApi = async () => {
   try {
     console.log("Début de l'import des offres...");
     
-    // 1. Supprimer tous les documents existants
     const snapshot = await getDocs(collection(db, "offers"));
-    
-    // Attendre que tous les documents soient supprimés
-    await Promise.all(
-      snapshot.docs.map(docSnap =>
-        deleteDoc(doc(db, "offers", docSnap.id))
-      )
-    );
-    
 
-    // 2. Récupérer les nouvelles données
-    const res = await fetch("https://api.apify.com/v2/datasets/NnPb1wbUhp7ksQlVa/items?token=apify_api_rezembg802lWwD4KOD32vC4aIu7w0L17FBBq");
+    const res = await fetch("https://api.apify.com/v2/datasets/IAvaIVBFzdv0kgQm6/items?token=apify_api_rezembg802lWwD4KOD32vC4aIu7w0L17FBBq");
     
     if (!res.ok) {
       throw new Error(`Erreur API: ${res.status}`);
@@ -37,8 +27,11 @@ export const importJobsFromApi = async () => {
     
     const data: IndeedRawJob[] = await res.json();
 
-    // 3. Limiter à 5 offres exactement
-    const limitedData = data.slice(0, 5);
+    const existingKeys = snapshot.docs.map(doc => doc.data().apiKey);
+
+    const newItems = data.filter(item => !existingKeys.includes(item.key));
+    const limitedData = newItems.slice(0, 5);
+    
     console.log(`Traitement de ${limitedData.length} offres...`);
 
     // 4. Ajouter les nouvelles offres une par une
