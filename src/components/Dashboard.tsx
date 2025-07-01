@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useGetOffers } from "../hooks/useGetOffers";
 import {importJobsFromApi} from "../hooks/fetchAndStoreOffers";
+import { Sidebar } from "../components/Sidebar";
+
 export const Dashboard = () => {
   const { currentUser, logout } = useAuth();
   const userName = currentUser?.displayName || 'Utilisateur';
@@ -58,52 +60,8 @@ export const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className="hidden md:flex md:w-64 md:flex-col fixed inset-y-0">
-        <div className="flex flex-col flex-grow pt-6 bg-white border-r border-gray-200 overflow-y-auto">
-          <div className="flex items-center justify-center px-4 mb-8">
-            <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">FD</span>
-            </div>
-            <span className="ml-2 text-xl font-bold text-indigo-800"></span>
-          </div>
-          <div className="px-4 mb-8">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="Search..."
-              />
-            </div>
-          </div>
-          <nav className="flex-1 px-4 space-y-2">
-            <a href="#" className="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg">
-              <ChartBarIcon className="h-5 w-5 mr-3" />
-              Dashboard
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-indigo-50 hover:text-indigo-800 rounded-lg">
-              <DocumentTextIcon className="h-5 w-5 mr-3" />
-              Applications
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-indigo-50 hover:text-indigo-800 rounded-lg">
-              <EnvelopeIcon className="h-5 w-5 mr-3" />
-              Cover Letters
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-indigo-50 hover:text-indigo-800 rounded-lg">
-              <UserIcon className="h-5 w-5 mr-3" />
-              Resume
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-indigo-50 hover:text-indigo-800 rounded-lg">
-              <CogIcon className="h-5 w-5 mr-3" />
-              Settings
-            </a>
-          </nav>
-        </div>
-      </div>
-
+      
+      <Sidebar/>
       {/* Main Content */}
       <div className="md:pl-64">
         {/* Top Navigation */}

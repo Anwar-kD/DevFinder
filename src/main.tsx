@@ -8,11 +8,18 @@ import { Login } from './components/Login';
 import { AuthProvider } from './context/AuthContext'; 
 import { Dashboard } from './components/Dashboard';
 import PrivateRoute  from './components/PrivateRoute';
+import { Offers } from './components/Offers';
+import { JobApplication } from './components/Application';
+import { CVOptimizer } from './components/CVOptimizer';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Welcome />,
+  },
+  {
+    path: '/offers',
+    element: <Offers />,
   },
   {
     path: '/sign-up',
@@ -25,17 +32,15 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: (<PrivateRoute><Dashboard /></PrivateRoute>), 
+  },
+  {
+    path: '/application/:offerId',
+    element: <JobApplication />, 
+  },
+    {
+    path: '/cvoptimizer',
+    element: <CVOptimizer />, 
   }
-  // {
-  //   path: '/profiles',
-  //   element: < />,
-  //   children: [
-  //     {
-  //       path: '/profiles/:profileId',
-  //       element: < />,
-  //     },
-  //   ],
-  // },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
