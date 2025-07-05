@@ -20,6 +20,9 @@ Grâce à des outils d'analyse de mots-clés, des suggestions personnalisées, e
 - 🖥️ **Interface intuitive et responsive** : Expérience fluide sur ordinateur comme sur mobile.
 
 ---
+![image](https://github.com/user-attachments/assets/dae451e7-d9df-4b09-951c-987b4ce7c077)
+![image](https://github.com/user-attachments/assets/5e2e7503-42f6-46f5-b319-5bbb2b6033f3)
+
 
 ## Technologies utilisées
 
